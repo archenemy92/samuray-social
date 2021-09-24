@@ -1,5 +1,4 @@
 import React, {useCallback} from "react"
-import {createStyles, fade, makeStyles, Theme} from "@material-ui/core/styles"
 import AppBar from "@material-ui/core/AppBar"
 import Toolbar from "@material-ui/core/Toolbar"
 import IconButton from "@material-ui/core/IconButton"
@@ -8,99 +7,24 @@ import InputBase from "@material-ui/core/InputBase"
 import Badge from "@material-ui/core/Badge"
 import MenuItem from "@material-ui/core/MenuItem"
 import Menu from "@material-ui/core/Menu"
-import MenuIcon from "@material-ui/icons/Menu"
 import SearchIcon from "@material-ui/icons/Search"
 import AccountCircle from "@material-ui/icons/AccountCircle"
 import MailIcon from "@material-ui/icons/Mail"
-import NotificationsIcon from "@material-ui/icons/Notifications"
 import MoreIcon from "@material-ui/icons/MoreVert"
-import {SwipeableDrawer} from "@material-ui/core"
-import {Navbar} from "./Navbar/Navbar"
+import PeopleIcon from "@material-ui/icons/People"
+import ContactsIcon from "@material-ui/icons/Contacts"
+import SettingsIcon from "@material-ui/icons/Settings"
+import LibraryMusicIcon from "@material-ui/icons/LibraryMusic"
 import {useHistory} from "react-router-dom"
+import {useStyles} from "./HeaderCSS"
 
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        navBar: {
-            padding: "10px",
-            backgroundColor: "beige"
-        },
-        grow: {
-            flexGrow: 1,
-        },
-        menuButton: {
-            marginRight: theme.spacing(2),
-        },
-        title: {
-            display: "none",
-            [theme.breakpoints.up("sm")]: {
-                display: "block",
-            },
-        },
-        search: {
-            position: "relative",
-            borderRadius: theme.shape.borderRadius,
-            backgroundColor: fade(theme.palette.common.white, 0.15),
-            "&:hover": {
-                backgroundColor: fade(theme.palette.common.white, 0.25),
-            },
-            marginRight: theme.spacing(2),
-            marginLeft: 0,
-            width: "100%",
-            [theme.breakpoints.up("sm")]: {
-                marginLeft: theme.spacing(3),
-                width: "auto",
-            },
-        },
-        searchIcon: {
-            padding: theme.spacing(0, 2),
-            height: "100%",
-            position: "absolute",
-            pointerEvents: "none",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-        },
-        inputRoot: {
-            color: "inherit",
-        },
-        inputInput: {
-            padding: theme.spacing(1, 1, 1, 0),
-            // vertical padding + font size from searchIcon
-            paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-            transition: theme.transitions.create("width"),
-            width: "100%",
-            [theme.breakpoints.up("md")]: {
-                width: "20ch",
-            },
-        },
-        sectionDesktop: {
-            display: "none",
-            [theme.breakpoints.up("md")]: {
-                display: "flex",
-            },
-        },
-        sectionMobile: {
-            display: "flex",
-            [theme.breakpoints.up("md")]: {
-                display: "none",
-            },
-        },
-    }),
-)
 
 export const Header: React.FC = () => {
 
     const classes = useStyles()
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null)
-    const [open, setOpen] = React.useState(false)
 
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl)
-
-    const history = useHistory()
-    const handleOnClickMessage = useCallback(() => history.push("/messages"), [history])
-    const handleOnClickProfile = useCallback(() => history.push("/profile"), [history])
-
-
 
     const handleMobileMenuClose = () => {
         setMobileMoreAnchorEl(null)
@@ -109,6 +33,43 @@ export const Header: React.FC = () => {
     const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
         setMobileMoreAnchorEl(event.currentTarget)
     }
+
+
+
+    const history = useHistory()
+
+    //
+    const HandleOnClick = (e: any) => useCallback(()=>{
+        history.push(e.datatype)
+        handleMobileMenuClose()
+    },[history])
+
+
+    const handleOnClickMessage = useCallback(() => {
+        history.push("/messages")
+        handleMobileMenuClose()
+    }, [history])
+    const handleOnClickProfile = useCallback(() => {
+        history.push("/profile")
+        handleMobileMenuClose()
+    }, [history])
+    const handleOnClickFriends = useCallback(() => {
+        history.push("/friends")
+        handleMobileMenuClose()
+    }, [history])
+    const handleOnClickUsers = useCallback(() => {
+        history.push("/users")
+        handleMobileMenuClose()
+    }, [history])
+    const handleOnClickMusic = useCallback(() => {
+        history.push("/music")
+        handleMobileMenuClose()
+    }, [history])
+    const handleOnClickSettings = useCallback(() => {
+        history.push("/settings")
+        handleMobileMenuClose()
+    }, [history])
+
 
     const menuId = "primary-search-account-menu"
     const renderMenu = (
@@ -133,22 +94,6 @@ export const Header: React.FC = () => {
             open={isMobileMenuOpen}
             onClose={handleMobileMenuClose}
         >
-            <MenuItem onClick={handleOnClickMessage}>
-                <IconButton aria-label="show 4 new mails" color="inherit">
-                    <Badge badgeContent={4} color="secondary">
-                        <MailIcon/>
-                    </Badge>
-                </IconButton>
-                <p>Messages</p>
-            </MenuItem>
-            <MenuItem>
-                <IconButton aria-label="show 11 new notifications" color="inherit">
-                    <Badge badgeContent={11} color="secondary">
-                        <NotificationsIcon/>
-                    </Badge>
-                </IconButton>
-                <p>Notifications</p>
-            </MenuItem>
             <MenuItem onClick={handleOnClickProfile}>
                 <IconButton
                     aria-label="account of current user"
@@ -157,28 +102,60 @@ export const Header: React.FC = () => {
                     color="inherit"
 
                 >
-                    <AccountCircle />
+                    <AccountCircle/>
                 </IconButton>
                 <p>Profile</p>
             </MenuItem>
+            <MenuItem onClick={HandleOnClick} datatype={"/message"}>
+                <IconButton aria-label="show new mails" color="inherit">
+                    <Badge badgeContent={0} color="secondary">
+                        <MailIcon/>
+                    </Badge>
+                </IconButton>
+                <p>Messages</p>
+            </MenuItem>
+            <MenuItem onClick={handleOnClickFriends}>
+                <IconButton aria-label="show new mails" color="inherit">
+                    <Badge badgeContent={0} color="secondary">
+                        <ContactsIcon/>
+                    </Badge>
+                </IconButton>
+                <p>Friends</p>
+            </MenuItem>
+            <MenuItem onClick={handleOnClickUsers}>
+                <IconButton aria-label="show new mails" color="inherit">
+                    <Badge badgeContent={0} color="secondary">
+                        <PeopleIcon/>
+                    </Badge>
+                </IconButton>
+                <p>Users</p>
+            </MenuItem>
+            <MenuItem onClick={handleOnClickMusic}>
+                <IconButton aria-label="show new mails" color="inherit">
+                    <Badge badgeContent={0} color="secondary">
+                        <LibraryMusicIcon/>
+                    </Badge>
+                </IconButton>
+                <p>Music</p>
+            </MenuItem>
+            <MenuItem onClick={handleOnClickSettings}>
+                <IconButton aria-label="show new mails" color="inherit">
+                    <Badge badgeContent={0} color="secondary">
+                        <SettingsIcon/>
+                    </Badge>
+                </IconButton>
+                <p>Settings</p>
+            </MenuItem>
+
         </Menu>
     )
 
     return (
         <div className={classes.grow}>
-            <AppBar position="static">
+            <AppBar position="static" style={{backgroundColor: "black"}}>
                 <Toolbar>
-                    <IconButton
-                        edge="start"
-                        className={classes.menuButton}
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={() => setOpen(!open)}
-                    >
-                        <MenuIcon/>
-                    </IconButton>
                     <Typography className={classes.title} variant="h6" noWrap>
-                       social-network
+                        social-network
                     </Typography>
                     <div className={classes.search}>
                         <div className={classes.searchIcon}>
@@ -195,17 +172,6 @@ export const Header: React.FC = () => {
                     </div>
                     <div className={classes.grow}/>
                     <div className={classes.sectionDesktop}>
-                        <IconButton aria-label="show 4 new mails" color="inherit"
-                                    onClick={handleOnClickMessage}>
-                            <Badge badgeContent={4} color="secondary">
-                                <MailIcon/>
-                            </Badge>
-                        </IconButton>
-                        <IconButton aria-label="show 17 new notifications" color="inherit">
-                            <Badge badgeContent={17} color="secondary">
-                                <NotificationsIcon/>
-                            </Badge>
-                        </IconButton>
                         <IconButton
                             edge="end"
                             aria-label="account of current user"
@@ -215,6 +181,36 @@ export const Header: React.FC = () => {
                             onClick={handleOnClickProfile}
                         >
                             <AccountCircle/>
+                        </IconButton>
+                        <IconButton aria-label="show 4 new mails" color="inherit"
+                                    onClick={handleOnClickMessage}>
+                            <Badge badgeContent={0} color="secondary">
+                                <MailIcon/>
+                            </Badge>
+                        </IconButton>
+                        <IconButton aria-label="show 4 new mails" color="inherit"
+                                    onClick={handleOnClickFriends}>
+                            <Badge badgeContent={0} color="secondary">
+                                <ContactsIcon/>
+                            </Badge>
+                        </IconButton>
+                        <IconButton aria-label="show 4 new mails" color="inherit"
+                                    onClick={handleOnClickUsers}>
+                            <Badge badgeContent={0} color="secondary">
+                                <PeopleIcon/>
+                            </Badge>
+                        </IconButton>
+                        <IconButton aria-label="show 4 new mails" color="inherit"
+                                    onClick={handleOnClickMusic}>
+                            <Badge badgeContent={0} color="secondary">
+                                <LibraryMusicIcon/>
+                            </Badge>
+                        </IconButton>
+                        <IconButton aria-label="show 4 new mails" color="inherit" datatype={"settings"}
+                                    onClick={handleOnClickSettings}>
+                            <Badge badgeContent={0} color="secondary">
+                                <SettingsIcon/>
+                            </Badge>
                         </IconButton>
                     </div>
                     <div className={classes.sectionMobile}>
@@ -232,16 +228,6 @@ export const Header: React.FC = () => {
             </AppBar>
             {renderMobileMenu}
             {renderMenu}
-            <SwipeableDrawer
-                anchor="left"
-                open={open}
-                onClose={() => setOpen(false)}
-                onOpen={() => setOpen(true)}
-            >
-                <div className={classes.navBar}>
-                    <Navbar/>
-                </div>
-            </SwipeableDrawer>
         </div>
     )
 }

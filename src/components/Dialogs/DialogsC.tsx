@@ -1,36 +1,27 @@
-import React, {Dispatch} from "react"
-import {connect} from "react-redux"
+import React from "react"
+import {useSelector} from "react-redux"
+import {useDispatch} from "react-redux"
 import {Dialogs} from "./Dialogs"
-import {StoreType} from "../../react-redux/Store"
-import {ActionsMessageType, addMessage, deleteMessage, MessageType, UserType} from "../../react-redux/dialogsReducer"
+import {AppStateType} from "../../react-redux/Store"
+import {addMessage} from "../../react-redux/dialogsReducer"
+import {deleteMessage} from "../../react-redux/dialogsReducer"
+import {MessageType} from "../../react-redux/dialogsReducer"
+import {UserType} from "../../react-redux/dialogsReducer"
 
-type MSTPType = {
-    usersNames: UserType[]
-    myMessage: MessageType[]
-    friendMessage: MessageType[]
-}
-type MDTPType = {
-    addMessage: (message: string) => void
-    deleteMessage: (messageId: number) => void
-}
+export const DialogsC: React.FC = () => {
 
-const mapStateToProps = (state: StoreType): MSTPType => {
-    return {
-        usersNames: state.dialogsPage.usersNames,
-        myMessage: state.dialogsPage.myMessage,
-        friendMessage: state.dialogsPage.friendMessage
-    }
-}
-const mapDispatchToProps = (dispatch: Dispatch<ActionsMessageType>): MDTPType => {
-    return {
-        addMessage: (message) => {
-            dispatch(addMessage(message))
-        },
-        deleteMessage: (messageId) => {
-            dispatch(deleteMessage(messageId))
-        }
+    const userNames = useSelector<AppStateType, UserType[]>(state => state.dialogsPage.usersNames)
+    const friendMessages = useSelector<AppStateType, MessageType[]>(state => state.dialogsPage.friendMessage)
+    const myMessages = useSelector<AppStateType, MessageType[]>(state => state.dialogsPage.myMessage)
 
-    }
-}
+    const dispatch = useDispatch()
 
-export const DialogsC = connect<MSTPType, MDTPType, {}, StoreType>(mapStateToProps, mapDispatchToProps)(Dialogs)
+    return (
+        <Dialogs
+            usersNames={userNames}
+            myMessage={myMessages}
+            friendMessage={friendMessages}
+            addMessage={(message) => dispatch(addMessage(message))}
+            deleteMessage={(messageId) => dispatch(deleteMessage(messageId))}/>
+    )
+}

@@ -6,20 +6,25 @@ import "./Navbar.css"
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
-            "& > li > a": {
-                padding: "5px",
-                fontWeight: "bold",
-                textDecoration: "none"
-            },
-            "& > li > a.active": {
-                color: 'yellow'
-            },
-            "& > li > a:not(.active)": {
-                color: "green"
-            },
-            "& > li": {
+            display: "flex",
+            justifyContent: "center",
+
+            "& > a": {
+                margin: "5px 20px 5px 20px",
+                fontWeight: "bolder",
+                textDecoration: "none",
                 listStyleType: "none"
-            }
+            },
+            "& > a.active": {
+                color: "hsl(253, 40%, 72%)"
+            },
+            "& > a:not(.active)": {
+                color: "hsl(202, 64%, 65%)"
+            },
+            "& > a:hover": {
+                color: "hsl(253, 40%, 59%)"
+            },
+
         }
     })
 )
@@ -29,37 +34,24 @@ export const Navbar: React.FC = () => {
     const classes = useStyles()
     return (
         <div className={classes.root}>
-            <li>
-                <NavLink to={"/profile"}>
-                    PROFILE
-                </NavLink>
-            </li>
-            <li>
-                <NavLink to={"/messages"}>
-                    MESSAGES
-                </NavLink>
-            </li>
-            <li>
-                <NavLink to={"/friends"}>
-                    FRIENDS
-                </NavLink>
-            </li>
-            <li>
-                <NavLink to={"/users"}>
-                    USERS
-                </NavLink>
-            </li>
-            <li>
-                <NavLink to={"/music"}>
-                    MUSIC
-                </NavLink>
-            </li>
-            <li>
-                <NavLink to={"/settings"}>
-                    SETTINGS
-                </NavLink>
-            </li>
-
+            <NavLink to={"/profile"}>
+                PROFILE
+            </NavLink>
+            <NavLink to={"/messages"}>
+                MESSAGES
+            </NavLink>
+            <NavLink to={"/friends"}>
+                FRIENDS
+            </NavLink>
+            <NavLink to={"/users"}>
+                USERS
+            </NavLink>
+            <NavLink to={"/music"}>
+                MUSIC
+            </NavLink>
+            <NavLink to={"/settings"}>
+                SETTINGS
+            </NavLink>
         </div>
     )
 }

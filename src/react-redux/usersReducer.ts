@@ -1,7 +1,5 @@
-const userPage_SET_USERS = "userPage_SET_USERS"
-const userPage_FOLLOW = "userPage_FOLLOW"
-const userPage_UNFOLLOW = "userPage_UNFOLLOW"
-//const userPage_SET_USERS = "userPage_SET_USERS"
+import {ThunkType} from "./Store"
+import {userApi} from "../API/api"
 
 export type UsersType = {
     name: string
@@ -21,22 +19,6 @@ export type StateType = {
     error: string | null
 }
 
-type SetUsersType = {
-    type: typeof userPage_SET_USERS
-    users: UsersType[]
-}
-
-type FollowType = {
-    type: typeof userPage_FOLLOW
-    id: number
-}
-type UnfollowType = {
-    type: typeof userPage_UNFOLLOW
-    id: number
-}
-
-export type ActionsUsersPageType = FollowType | UnfollowType| SetUsersType
-
 const initialState: StateType = {
     users: [] as UsersType[],
     totalCount: null,
@@ -47,10 +29,10 @@ const initialState: StateType = {
 export const usersReducer = (state = initialState, action: ActionsUsersPageType): StateType => {
 
     switch (action.type) {
-        case userPage_SET_USERS: {
+        case "userPage_SET_USERS": {
             return {
                 ...state,
-                users: [...state.users, ...action.users]
+                users: [...action.users]
             }
         }
         default: {
@@ -59,21 +41,33 @@ export const usersReducer = (state = initialState, action: ActionsUsersPageType)
     }
 }
 
-export const follow = (userId: number): FollowType => {
+export const follow = (userId: number) => {
     return {
-        type: userPage_FOLLOW,
+        type: "userPage_FOLLOW",
         id: userId
-    }
+    } as const
 }
-export const unfollow = (userId: number): UnfollowType => {
+export const unfollow = (userId: number) => {
     return {
-        type: userPage_UNFOLLOW,
+        type: "userPage_UNFOLLOW",
         id: userId
-    }
+    } as const
 }
-export const setUsers = (users: UsersType[]): SetUsersType => {
+export const setUsers = (users: UsersType[]) => {
     return {
-        type: userPage_SET_USERS,
+        type: "userPage_SET_USERS",
         users
-    }
+    } as const
 }
+
+export const getUsers = ():ThunkType =>
+    async (dispatch) => {
+    const res = await userApi.getUsers()
+        dispatch(setUsers(res.data.items))
+    }
+
+type SetUsersType = ReturnType<typeof setUsers>
+type FollowType = ReturnType<typeof follow>
+type UnfollowType = ReturnType<typeof unfollow>
+
+export type ActionsUsersPageType = FollowType | UnfollowType| SetUsersType

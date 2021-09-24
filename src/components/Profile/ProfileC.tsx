@@ -1,7 +1,7 @@
 import {Dispatch} from "react"
 import {connect} from "react-redux"
 import {Profile} from "./Profile"
-import {StoreType} from "../../react-redux/Store"
+import {AppStateType} from "../../react-redux/Store"
 import {
     ActionsProfileTypes,
     addPost,
@@ -16,7 +16,7 @@ type MSTPType = {
     status: string | null
     posts: PostType[]
 }
-const mapStateToProps = (state: StoreType): MSTPType => {
+const mapStateToProps = (state: AppStateType): MSTPType => {
     return {
         avatar: state.profilePage.ava,
         description: state.profilePage.desc,
@@ -40,4 +40,4 @@ const mapDispatchToProps = (dispatch: Dispatch<ActionsProfileTypes>): MDTPType =
     }
 }
 
-export const ProfileC = connect<MSTPType, MDTPType, {}, StoreType>(mapStateToProps, mapDispatchToProps)(Profile)
+export const ProfileC = connect<MSTPType, MDTPType, {}, AppStateType>(mapStateToProps, mapDispatchToProps)(Profile)
