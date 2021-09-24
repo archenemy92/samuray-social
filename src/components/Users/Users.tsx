@@ -18,29 +18,29 @@ type UsersPropsType = {
 
 export const Users: React.FC<UsersPropsType> = (props) => {
     const classes = useStyles()
-    debugger
+
     const users = props.users.map(u => {
         return (
-            <div key={u.id}>
+            <div key={u.id} style={{margin: "0 0 10px 0"}}>
                 <div>
                     <img src={u.photos?.small || AVATAR} className={classes.img}/>
                 </div>
                 <div>{u.name}</div>
                 <div>{u.status}</div>
                 <div>
-            <span>
-                <button>follow</button>
-            </span>
                     <span>
-                <button>unfollow</button>
-            </span>
+                        <button>follow</button>
+                    </span>
+                    <span>
+                        <button>unfollow</button>
+                    </span>
                 </div>
             </div>
         )
     })
     return (
-        <>
+        <div style={{margin: "10px 0 0 10px"}}>
             {users}
-        </>
+        </div>
     )
 }

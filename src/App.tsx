@@ -33,7 +33,7 @@ const App: React.FC = () => {
     const classes = useStyles()
     return (
         <div className={classes.root}>
-            <Grid container spacing={2}>
+            <Grid container>
                 <Grid item xs={12}>
                     <Header />
                 </Grid>
